@@ -1,0 +1,37 @@
+import io
+import os
+from setuptools import find_packages, setup
+
+
+def read(*paths, **kwargs):
+    with io.open(
+        os.path.join(os.path.dirname(__file__), *paths),
+        encoding=kwargs.get("encoding", "utf8"),
+    ) as open_file:
+        content = open_file.read().strip()
+    return content
+
+
+def read_requirements(path):
+    return [
+        line.strip()
+        for line in read(path).split("\n")
+        if not line.startswith(('"', "#", "-", "git+"))
+    ]
+
+
+setup(
+    name="strefi",
+    version=read("project_name", "VERSION"),
+    description="Stream a file line per line and write in a kafka topic",
+    url="https://github.com/VictorMeyer77/strefi",
+    long_description=read("README.md"),
+    long_description_content_type="text/markdown",
+    author="Victor Meyer",
+    packages=find_packages(exclude=["tests", ".github"]),
+    install_requires=read_requirements("requirements.txt"),
+    entry_points={
+        "console_scripts": ["project_name = strefi.__main__:main"]
+    },
+    extras_require={"test": read_requirements("requirements-test.txt")},
+)
