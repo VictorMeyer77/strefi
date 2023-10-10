@@ -7,7 +7,11 @@ import stopper
 
 def stream_file_to_topic(file_path, producer, topic, defaults, headers, running_path):
     for line in parser.stream_file(file_path, running_path):
-        producer.send(topic, kafka_utils.create_record(file_path, line, defaults).encode(), headers=headers)
+        producer.send(
+            topic,
+            kafka_utils.create_record(file_path, line, defaults).encode(),
+            headers=headers,
+        )
         producer.flush()
 
 
@@ -19,8 +23,10 @@ def create_threads(config):
     for file in config["files"].keys():
         producer = kafka_utils.create_producer(config["producer"])
         topic = config["files"][file]
-        thread = threading.Thread(target=stream_file_to_topic,
-                                  args=(file, producer, topic, config["defaults"], headers, running_path))
+        thread = threading.Thread(
+            target=stream_file_to_topic,
+            args=(file, producer, topic, config["defaults"], headers, running_path),
+        )
         threads.append(thread)
 
     return threads

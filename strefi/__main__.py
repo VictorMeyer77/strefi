@@ -4,10 +4,12 @@ import strefi
 
 
 def parse_args(args):
-    parser = argparse.ArgumentParser(prog="strefi",
-                                     description="Stream a file line per line and write in a kafka topic",
-                                     epilog="More information on GitHub")
-    parser.add_argument("command", help="\"start\" to launch stream or \"stop\" to kill stream")
+    parser = argparse.ArgumentParser(
+        prog="strefi",
+        description="Stream a file line per line and write in a kafka topic",
+        epilog="More information on GitHub",
+    )
+    parser.add_argument("command", help='"start" to launch stream or "stop" to kill stream')
     parser.add_argument("-c", "--config", help="configuration file path")
     parser.add_argument("-i", "--jobid", help="stream id")
 

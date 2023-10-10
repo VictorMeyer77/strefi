@@ -11,9 +11,6 @@ def create_producer(producer_config):
 
 
 def create_record(file_path, row, defaults_config):
-    record = {
-        "file": file_path,
-        "row": row
-    }
+    record = {"file": file_path, "row": row}
     record.update(dict(defaults_config))
     return json.dumps(record)
