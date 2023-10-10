@@ -1,6 +1,6 @@
 import sys
 import argparse
-import strefi
+import command
 
 
 def parse_args(args):
@@ -30,6 +30,6 @@ def parse_args(args):
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
     if args.command.lower() == "start":
-        strefi.start(args.config)
+        command.start(args.config)
     elif args.command.lower() == "stop":
-        strefi.stop(args.jobid)
+        command.stop(args.jobid)
