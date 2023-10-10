@@ -22,7 +22,7 @@ def read_requirements(path):
 
 setup(
     name="strefi",
-    version=read("project_name", "VERSION"),
+    version=read("strefi", "VERSION"),
     description="Stream a file line per line and write in a kafka topic",
     url="https://github.com/VictorMeyer77/strefi",
     long_description=read("README.md"),
@@ -31,7 +31,7 @@ setup(
     packages=find_packages(exclude=["tests", ".github"]),
     install_requires=read_requirements("requirements.txt"),
     entry_points={
-        "console_scripts": ["project_name = strefi.__main__:main"]
+        "console_scripts": ["strefi = strefi.__main__:main"]
     },
     extras_require={"test": read_requirements("requirements-test.txt")},
 )
