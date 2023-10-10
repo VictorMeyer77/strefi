@@ -24,14 +24,14 @@ install:          ## Install the project in dev mode.
 .PHONY: fmt
 fmt:              ## Format code using black & isort.
 	$(ENV_PREFIX)isort strefi/
-	$(ENV_PREFIX)black -l 79 strefi/
-	$(ENV_PREFIX)black -l 79 tests/
+	$(ENV_PREFIX)black -l 120 strefi/
+	$(ENV_PREFIX)black -l 120 tests/
 
 .PHONY: lint
 lint:             ## Run pep8, black, mypy linters.
-	$(ENV_PREFIX)flake8 strefi/
-	$(ENV_PREFIX)black -l 79 --check strefi/
-	$(ENV_PREFIX)black -l 79 --check tests/
+	$(ENV_PREFIX)flake8 --max-line-length 120 strefi/
+	$(ENV_PREFIX)black -l 120 --check strefi/
+	$(ENV_PREFIX)black -l 120 --check tests/
 	$(ENV_PREFIX)mypy --ignore-missing-imports strefi/
 
 .PHONY: test
