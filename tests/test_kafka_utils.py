@@ -7,6 +7,13 @@ def test_format_record_headers_transform_dict_to_config():
     assert headers_tuple == [("version", b"0.1"), ("type", b"json")]
 
 
+def test_create_producer():
+    producer_config = {"bootstrap_servers": "localhost:9092", "client_id": "test-id", "acks": 0, "retries": 0}
+    producer = kafka_utils.create_producer(producer_config)
+    for key, value in producer_config.items():
+        assert value == producer.config[key]
+
+
 def test_create_record_should_create_dict_with_defaults():
     defaults = {"hostname": "lpt01", "system": "Linux"}
     record = kafka_utils.create_record("/path/to/file", "foo", defaults)
