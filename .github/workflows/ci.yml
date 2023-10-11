@@ -44,7 +44,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - uses: adambirds/docker-compose-action@v1.3.0
         with:
-          compose-file: "./.github/workflows/docker/docker-compose.yml"
+          compose-file: "./.github/docker/docker-compose.yml"
       - name: Install project
         run: make install
       - name: Run tests
