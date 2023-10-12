@@ -27,9 +27,13 @@ def parse_args(args):
     return args
 
 
-if __name__ == "__main__":
-    args = parse_args(sys.argv[1:])
+def main(args):
+    args = parse_args(args)
     if args.command.lower() == "start":
         command.start(args.config)
     elif args.command.lower() == "stop":
         command.stop(args.jobid)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
