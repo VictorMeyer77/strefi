@@ -12,7 +12,6 @@ def stream_file_to_topic(file_path, producer, topic, defaults, headers, running_
             kafka_utils.create_record(file_path, line, defaults).encode(),
             headers=headers,
         )
-        producer.flush()
 
 
 def create_threads(config):
