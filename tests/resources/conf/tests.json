@@ -1,0 +1,21 @@
+{
+   "producer":{
+      "bootstrap_servers":"localhost:9092",
+      "client_id":"strefi-client",
+      "acks":0,
+      "retries":0
+   },
+   "headers":{
+      "version":"0.1",
+      "type":"json"
+   },
+   "defaults":{
+      "hostname":"lpt01",
+      "system":"Linux",
+      "version":"22.04.1-Ubuntu"
+   },
+   "files":{
+      "test_file_0.log":"strefi-tests",
+      "test_file_1.log":"strefi-tests"
+   }
+}
