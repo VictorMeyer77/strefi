@@ -4,7 +4,6 @@ The module contains the following functions:
 
 - `yield_last_line(file, running_path)` - Yield last line of a file.
 - `stream_file(file_path, running_path)` - Wait file creation before calling yield_last_line.
-
 """
 
 import os
