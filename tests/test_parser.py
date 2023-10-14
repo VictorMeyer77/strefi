@@ -6,18 +6,18 @@ from strefi import parser, stopper
 RESOURCES_PATH = "tests"
 
 
-def test_get_last_line_should_yield_new_file_row_while_running_file_exists():
+def test_yield_last_line_should_yield_new_file_row_while_running_file_exists():
     function_outputs = []
     running_path = stopper.write_running_file()
     with open(f"{RESOURCES_PATH}/parser_0.txt", "w") as f:
         f.write("")
     file_read = open(f"{RESOURCES_PATH}/parser_0.txt", "r")
 
-    def thread_get_last_line():
-        for line in parser.get_last_line(file_read, running_path):
+    def thread_yield_last_line():
+        for line in parser.yield_last_line(file_read, running_path):
             function_outputs.append(line.replace("\n", ""))
 
-    test_thread = threading.Thread(target=thread_get_last_line)
+    test_thread = threading.Thread(target=thread_yield_last_line)
     test_thread.start()
 
     for i in range(100):
