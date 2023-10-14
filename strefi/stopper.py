@@ -19,8 +19,6 @@ def write_running_file() -> str:
     The file name is composed with an ID generated and print in the stdout.
     This id identify the stream and is used to delete running file.
 
-    Args:
-
     Returns:
         Absolute path of the running file.
     """
@@ -35,8 +33,6 @@ def remove_running_file(job_id: str):
 
     Args:
         job_id: job id of the running file to delete. 'all' to delete all strefi running file.
-
-    Returns:
     """
     job_id = "" if job_id == "all" else job_id
     running_files = list(filter(lambda x: f"strefi_{str(job_id)}" in x, os.listdir(tempfile.gettempdir())))
