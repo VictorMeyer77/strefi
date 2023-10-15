@@ -37,11 +37,7 @@ def stream_file_to_topic(
         running_path: Running file path
     """
     for line in parser.stream_file(file_path, running_path):
-        producer.send(
-            topic,
-            kafka_utils.format_record_value(file_path, line, defaults).encode(),
-            headers=headers
-        )
+        producer.send(topic, kafka_utils.format_record_value(file_path, line, defaults).encode(), headers=headers)
 
 
 def create_threads(config: dict[str, any]) -> list[threading.Thread]:
