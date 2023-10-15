@@ -7,4 +7,6 @@ pytest-cov
 mypy
 gitchangelog
 mkdocs
+mkdocstrings
+mkdocstrings-python
 kafka-python==2.0.2
