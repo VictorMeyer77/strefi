@@ -52,7 +52,7 @@ def format_record_value(file_path: str, row: str, defaults_config: dict[str, obj
     Args:
         file_path: Path of the stream file.
         row: Last row writen in the streamed file.
-        defaults_config: Configured dictionnary to add in the record value.
+        defaults_config: Configured dictionary to add in the record value.
 
     Returns:
         Formatted string record value.
