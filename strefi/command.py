@@ -9,7 +9,7 @@ def stream_file_to_topic(file_path, producer, topic, defaults, headers, running_
     for line in parser.stream_file(file_path, running_path):
         producer.send(
             topic,
-            kafka_utils.create_record(file_path, line, defaults).encode(),
+            kafka_utils.format_record_value(file_path, line, defaults).encode(),
             headers=headers,
         )
 

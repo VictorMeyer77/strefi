@@ -14,7 +14,7 @@ def test_create_producer():
         assert value == producer.config[key]
 
 
-def test_create_record_should_create_dict_with_defaults():
+def test_format_record_value_should_create_dict_with_defaults():
     defaults = {"hostname": "lpt01", "system": "Linux"}
-    record = kafka_utils.create_record("/path/to/file", "foo", defaults)
+    record = kafka_utils.format_record_value("/path/to/file", "foo", defaults)
     assert record == """{"file": "/path/to/file", "row": "foo", "hostname": "lpt01", "system": "Linux"}"""
