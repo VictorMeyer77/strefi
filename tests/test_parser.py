@@ -1,6 +1,7 @@
-import time
-import threading
 import os
+import threading
+import time
+
 from strefi import parser, stopper
 
 RESOURCES_PATH = "tests"

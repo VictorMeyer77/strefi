@@ -1,11 +1,12 @@
-from argparse import Namespace
-from strefi import __main__
-from kafka import KafkaConsumer
-from strefi import stopper
+import os
 import threading
 import time
-import os
+from argparse import Namespace
+
 import pytest
+from kafka import KafkaConsumer
+
+from strefi import __main__, stopper
 
 
 def test_parse_args_should_return_namespace():
@@ -34,7 +35,8 @@ def test_parse_args_should_raises_error_when_args_are_invalids():
 
 
 def test_start_should_run_strefi():
-    consumed_records = []
+    consumed_record_values = []
+    consumed_record_headers = []
 
     def write_file_thread_function(file_path, prefix):
         with open(file_path, "w") as f:
@@ -45,7 +47,8 @@ def test_start_should_run_strefi():
     def consumer_thread_function():
         consumer = KafkaConsumer("strefi-tests", bootstrap_servers="localhost:9092", consumer_timeout_ms=5000)
         for record in consumer:
-            consumed_records.append(record.value)
+            consumed_record_values.append(record.value)
+            consumed_record_headers.append(record.headers)
 
     def start_thread_function():
         __main__.main(["start", "-c", "tests/resources/conf/tests.json"])
@@ -76,7 +79,8 @@ def test_start_should_run_strefi():
     write_file_thread_a.join()
     write_file_thread_b.join()
 
-    assert sorted(get_target_records()) == sorted(consumed_records)
+    assert sorted(get_target_records()) == sorted(consumed_record_values)
+    assert consumed_record_headers == [[("version", b"0.1"), ("type", b"json")] for _ in range(200)]
 
 
 def test_stop_should_kill_strefi():
