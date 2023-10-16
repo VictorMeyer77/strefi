@@ -36,4 +36,5 @@ def remove_running_file(job_id: str):
     """
     job_id = "" if job_id == "all" else job_id
     running_files = list(filter(lambda x: f"strefi_{str(job_id)}" in x, os.listdir(tempfile.gettempdir())))
-    [os.remove(os.path.join(tempfile.gettempdir(), running_file)) for running_file in running_files]
+    for running_file in running_files:
+        os.remove(os.path.join(tempfile.gettempdir(), running_file))

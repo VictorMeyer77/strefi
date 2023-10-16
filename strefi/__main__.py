@@ -31,18 +31,18 @@ def parse_args(args: list[str]) -> argparse.Namespace:
     parser.add_argument("-c", "--config", help="configuration file path")
     parser.add_argument("-i", "--jobid", help="stream id")
 
-    args = parser.parse_args(args)
+    namespace = parser.parse_args(args)
 
-    if args.command.lower() == "start":
-        if args.config is None:
+    if namespace.command.lower() == "start":
+        if namespace.config is None:
             parser.error("missing configuration file path")
-    elif args.command.lower() == "stop":
-        if args.jobid is None:
+    elif namespace.command.lower() == "stop":
+        if namespace.jobid is None:
             parser.error("missing configuration job id")
     else:
-        parser.error(f"unknown command {args.command}")
+        parser.error(f"unknown command {namespace.command}")
 
-    return args
+    return namespace
 
 
 def main(args: list[str]):
@@ -51,11 +51,11 @@ def main(args: list[str]):
     Args:
         args: list of program arguments.
     """
-    args = parse_args(args)
-    if args.command.lower() == "start":
-        command.start(args.config)
-    elif args.command.lower() == "stop":
-        command.stop(args.jobid)
+    namespace = parse_args(args)
+    if namespace.command.lower() == "start":
+        command.start(namespace.config)
+    elif namespace.command.lower() == "stop":
+        command.stop(namespace.jobid)
 
 
 if __name__ == "__main__":

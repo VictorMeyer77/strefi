@@ -8,9 +8,8 @@ Stream file and write last row to a kafka topic.
 - `start(config_path)` - Read configuration file and launch all streams.
 - `stop(jobid)` - Stop strefi threads.
 """
-
+from typing import Any
 from kafka import KafkaProducer
-
 import kafka_utils
 import threading
 import parser
@@ -40,7 +39,7 @@ def stream_file_to_topic(
         producer.send(topic, kafka_utils.format_record_value(file_path, line, defaults).encode(), headers=headers)
 
 
-def create_threads(config: dict[str, any]) -> list[threading.Thread]:
+def create_threads(config: dict[str, Any]) -> list[threading.Thread]:
     """Create one thread by table from all the configuration.
 
     Args:
@@ -75,8 +74,10 @@ def start(config_path: str):
     with open(config_path, "r") as f:
         config = json.loads(f.read())
     threads = create_threads(config)
-    [thread.start() for thread in threads]
-    [thread.join() for thread in threads]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
 
 
 def stop(jobid: str):
