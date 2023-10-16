@@ -1,0 +1,19 @@
+site_name: strefi
+site_description: Stream file line per line to write in kafka
+site_author: Victor Meyer
+
+repo_name: VictorMeyer77/strefi
+repo_url: https://github.com/VictorMeyer77/strefi
+
+theme: readthedocs
+
+nav:
+  - Home: index.md
+  - Getting start: getting-start.md
+  - Configuration: configuration.md
+  - Reference: reference.md
+  - Contributing: contributing.md
+
+plugins:
+  - search
+  - mkdocstrings
