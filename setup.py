@@ -23,7 +23,7 @@ def read_requirements(path):
 setup(
     name="strefi",
     version=read("strefi", "VERSION"),
-    description="Stream a file line per line and write in a kafka topic",
+    description="Stream each new rows of a file and write in kafka",
     url="https://github.com/VictorMeyer77/strefi",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",

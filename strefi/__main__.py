@@ -25,7 +25,7 @@ def parse_args(args: list[str]) -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser(
         prog="strefi",
-        description="Stream a file line per line and write in a kafka topic",
+        description="Stream each new rows of a file and write in kafka",
         epilog="More information on GitHub",
     )
     parser.add_argument("command", help='"start" to launch stream or "stop" to kill stream')

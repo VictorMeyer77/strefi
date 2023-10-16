@@ -5,9 +5,9 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![version](https://img.shields.io/badge/version-0.1.0-white)
 
-Stream a file line per line and write in a kafka topic. 
+Stream each new rows of a file and write in kafka. 
 
-## prerequisites
+## Prerequisites
 
 ## Installation
 
@@ -16,7 +16,7 @@ Stream a file line per line and write in a kafka topic.
 ```txt
 usage: strefi [-h] [-c CONFIG] [-i JOBID] command
 
-Stream a file line per line and write in a kafka topic
+Stream each new rows of a file and write in kafka
 
 positional arguments:
   command               "start" to launch stream or "stop" to kill stream
