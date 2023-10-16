@@ -7,8 +7,9 @@ The module contains the following functions:
 - `main(args)` - Entrypoint function. Launch the right method.
 """
 
-import sys
 import argparse
+import sys
+
 import command
 
 

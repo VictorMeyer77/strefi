@@ -7,8 +7,9 @@ The module contains the following functions:
 - `format_record_value(file_path, row, defaults_config)` - Serialize record value.
 """
 
-from kafka import KafkaProducer
 import json
+
+from kafka import KafkaProducer
 
 
 def format_record_headers(headers_config: dict[str, str]) -> list[tuple[str, bytes]]:

@@ -8,13 +8,14 @@ Stream file and write last row to a kafka topic.
 - `start(config_path)` - Read configuration file and launch all streams.
 - `stop(jobid)` - Stop strefi threads.
 """
-from typing import Any
-from kafka import KafkaProducer
-import kafka_utils
-import threading
-import parser
 import json
+import parser
+import threading
+from typing import Any
+
+import kafka_utils
 import stopper
+from kafka import KafkaProducer
 
 
 def stream_file_to_topic(

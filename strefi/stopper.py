@@ -9,9 +9,9 @@ The module contains the following functions:
 - `remove_running_file(job_id)` - Remove a running file from a job id.
 """
 
+import os
 import tempfile
 import time
-import os
 
 
 def write_running_file() -> str:
