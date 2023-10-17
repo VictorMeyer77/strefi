@@ -8,4 +8,4 @@ mypy
 mkdocs
 mkdocstrings
 mkdocstrings-python
-kafka-python==2.0.2
+kafka-python>=2.0.2
