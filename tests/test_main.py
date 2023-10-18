@@ -2,6 +2,7 @@ import os
 import threading
 import time
 from argparse import Namespace
+from unittest.mock import patch
 
 import pytest
 from kafka import KafkaConsumer
@@ -51,7 +52,8 @@ def test_start_should_run_strefi():
             consumed_record_headers.append(record.headers)
 
     def start_thread_function():
-        __main__.main(["start", "-c", "tests/resources/conf/tests.json"])
+        with patch("sys.argv", ["__main__.py", "start", "-c", "tests/resources/conf/tests.json"]):
+            __main__.main()
 
     def get_target_records():
         record_base = (
@@ -72,7 +74,8 @@ def test_start_should_run_strefi():
     write_file_thread_b.start()
 
     time.sleep(5)
-    __main__.main(["stop", "-i", "all"])
+    with patch("sys.argv", ["__main__.py", "stop", "-i", "all"]):
+        __main__.main()
 
     consumer_thread.join()
     start_thread.join()
@@ -85,11 +88,13 @@ def test_start_should_run_strefi():
 
 def test_stop_should_kill_strefi():
     running_path_a = stopper.write_running_file()
-    __main__.main(["stop", "-i", f"{running_path_a.split('_')[1]}"])
+    with patch("sys.argv", ["__main__.py", "stop", "-i", f"{running_path_a.split('_')[1]}"]):
+        __main__.main()
     assert not os.path.exists(running_path_a)
 
     running_path_b = stopper.write_running_file()
     running_path_c = stopper.write_running_file()
-    __main__.main(["stop", "-i", "all"])
+    with patch("sys.argv", ["__main__.py", "stop", "-i", "all"]):
+        __main__.main()
     assert not os.path.exists(running_path_b)
     assert not os.path.exists(running_path_c)

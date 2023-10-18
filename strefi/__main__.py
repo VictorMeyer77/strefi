@@ -4,7 +4,7 @@
 The module contains the following functions:
 
 - `parse_args(args)` - Read and verify program arguments.
-- `main(args)` - Entrypoint function. Launch the right method.
+- `main()` - Entrypoint function. Launch the right method.
 """
 
 import argparse
@@ -46,12 +46,9 @@ def parse_args(args: list[str]) -> argparse.Namespace:
     return namespace
 
 
-def main(args: list[str]):
-    """Entrypoint function. Launch the right method.
-
-    Args:
-        args: list of program arguments.
-    """
+def main():
+    """Entrypoint function. Launch the right method."""
+    args = sys.argv[1:]
     namespace = parse_args(args)
     if namespace.command.lower() == "start":
         command.start(namespace.config)
@@ -60,4 +57,4 @@ def main(args: list[str]):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()  # pragma: no cover
