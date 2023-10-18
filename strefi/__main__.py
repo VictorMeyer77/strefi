@@ -10,7 +10,7 @@ The module contains the following functions:
 import argparse
 import sys
 
-import command
+from strefi import command
 
 
 def parse_args(args: list[str]) -> argparse.Namespace:

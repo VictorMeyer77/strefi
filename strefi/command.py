@@ -9,13 +9,12 @@ Stream file and write last row to a kafka topic.
 - `stop(jobid)` - Stop strefi threads.
 """
 import json
-import parser
 import threading
 from typing import Any
 
-import kafka_utils
-import stopper
 from kafka import KafkaProducer
+
+from strefi import kafka_utils, parser, stopper
 
 
 def stream_file_to_topic(
