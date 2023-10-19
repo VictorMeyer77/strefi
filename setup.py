@@ -37,7 +37,7 @@ setup(
         "Development Status :: 4 - Beta",
         "Environment :: Console",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX :: Linux",
         "Operating System :: Microsoft :: Windows",
