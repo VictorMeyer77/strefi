@@ -40,10 +40,6 @@ test: lint        ## Run tests and generate coverage report.
 	$(ENV_PREFIX)coverage xml
 	$(ENV_PREFIX)coverage html
 
-.PHONY: watch
-watch:            ## Run tests on every change.
-	ls **/**.py | entr $(ENV_PREFIX)pytest -s -vvv -l --tb=long --maxfail=1 tests/
-
 .PHONY: clean
 clean:            ## Clean unused files.
 	@find ./ -name '*.pyc' -exec rm -f {} \;
