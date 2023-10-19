@@ -9,7 +9,7 @@ theme: readthedocs
 
 nav:
   - Home: index.md
-  - Getting start: getting-start.md
+  - Getting Started: getting-started.md
   - Configuration: configuration.md
   - Reference: reference.md
   - Contributing: contributing.md
