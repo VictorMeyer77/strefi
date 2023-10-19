@@ -107,7 +107,7 @@ To trigger a new release all you need to do is.
     * Make your changes following the steps described above.
     * Commit your changes following the [conventional git commit messages](https://www.conventionalcommits.org/en/v1.0.0/).
 2. Run the tests to ensure everything is working.
-3. Change the version in [VERSION](https://github.com/VictorMeyer77/strefi/blob/main/strefi/VERSION) and [README.md](https://github.com/VictorMeyer77/strefi/blob/main/README.md). 
+3. Change the version in [VERSION](https://github.com/VictorMeyer77/strefi/blob/main/strefi/VERSION). 
 4. In CHANGELOG.md replace [Unreleased] with the new version.
 5. Add these lines on the top of CHANGELOG.md
 ```txt
