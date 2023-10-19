@@ -1,8 +1,22 @@
-# Getting Start
-
-## Prerequisites
+# Getting Started
 
 ## Installation
+
+PyPi
+
+```shell
+pip install strefi
+```
+
+Git
+
+```shell
+git clone https://github.com/VictorMeyer77/strefi.git
+cd strefi
+make virtualenv # if you want create new environment
+source .venv/bin/activate # if you want activate the new environment
+make install
+```
 
 ## Usage
 
@@ -24,12 +38,18 @@ options:
 
 Launch job
 
-    strefi start -c config.json
+```shell
+strefi start -c config.json
+```
 
 Stop a job
 
-    strefi stop -i {job_id}
+```shell
+strefi stop -i {job_id}
+```
 
 Stop all jobs
 
-    strefi stop -i all
+```shell
+strefi stop -i all
+```

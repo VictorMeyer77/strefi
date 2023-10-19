@@ -1,15 +1,30 @@
 # strefi
 
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 [![codecov](https://codecov.io/github/VictorMeyer77/strefi/graph/badge.svg?token=MCO1XZI4OO)](https://codecov.io/github/VictorMeyer77/strefi)
 [![CI](https://github.com/VictorMeyer77/strefi/actions/workflows/ci.yml/badge.svg)](https://github.com/VictorMeyer77/strefi/actions/workflows/ci.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![version](https://img.shields.io/badge/version-0.1.0-white)
+![style](https://img.shields.io/badge/code%20style-black-000000.svg)
 
 Stream each new rows of a file and write in kafka. 
 
-## Prerequisites
-
 ## Installation
+
+PyPi
+
+```shell
+pip install strefi
+```
+
+Git
+
+```shell
+git clone https://github.com/VictorMeyer77/strefi.git
+cd strefi
+make virtualenv # if you want create new environment
+source .venv/bin/activate # if you want activate the new environment
+make install
+```
 
 ## Usage
 
@@ -31,15 +46,21 @@ options:
 
 Launch job
 
-    strefi start -c config.json
+```shell
+strefi start -c config.json
+```
 
 Stop a job
 
-    strefi stop -i {job_id}
+```shell
+strefi stop -i {job_id}
+```
 
 Stop all jobs
 
-    strefi stop -i all
+```shell
+strefi stop -i all
+```
 
 ## Configuration
 
