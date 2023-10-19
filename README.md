@@ -8,6 +8,11 @@
 
 Stream each new rows of a file and write in kafka. 
 
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [License](#license)
+
 ## Installation
 
 PyPi
