@@ -30,8 +30,25 @@ setup(
     author="Victor Meyer",
     packages=find_packages(exclude=["tests", ".github"]),
     install_requires=read_requirements("requirements.txt"),
-    entry_points={
-        "console_scripts": ["strefi = strefi.__main__:main"]
-    },
+    entry_points={"console_scripts": ["strefi = strefi.__main__:main"]},
     extras_require={"test": read_requirements("requirements-test.txt")},
+    license_files="LICENSE",
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: POSIX :: Linux",
+        "Operating System :: Microsoft :: Windows",
+        "Programming Language :: Python",
+    ],
+    project_urls=(
+        {
+            "Bug Tracker": "https://github.com/VictorMeyer77/strefi/issues",
+            "Changelog": "https://github.com/VictorMeyer77/strefi/blob/main/CHANGELOG.md",
+            "Documentation": "https://strefi.readthedocs.io",
+            "Source": "https://github.com/VictorMeyer77/strefi",
+        }
+    ),
 )
