@@ -12,6 +12,11 @@ from typing import Iterator, TextIO
 
 def yield_last_line(file: TextIO, running_path: str) -> Iterator[str]:
     """Yield last line of a file.
+    This function terminates in 3 cases:
+    The running file is removed, in this case all program stop.
+    The streamed file is removed, in this case the program still running and waits for the file creation.
+    One or more bytes were deleted from the streamed file,
+    in this case the function is terminated, but it's called back just after.
 
     Args:
         file: Read-open file to stream.
@@ -20,11 +25,20 @@ def yield_last_line(file: TextIO, running_path: str) -> Iterator[str]:
     Returns:
         Yield the last line. Ignore empty line.
     """
+    file_size = 0
     file.seek(0, os.SEEK_END)
     while os.path.exists(running_path):
-        line = file.readline()
-        if line and line not in ["\n", ""]:
-            yield line
+        try:
+            new_file_size = os.path.getsize(file.name)
+            if new_file_size < file_size:
+                break
+            else:
+                file_size = new_file_size
+            line = file.readline()
+            if line and line not in ["\n", ""]:
+                yield line
+        except FileNotFoundError:
+            break
 
 
 def stream_file(file_path: str, running_path: str) -> Iterator[str]:
