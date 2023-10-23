@@ -37,8 +37,10 @@ lint:             ## Run pep8, black, mypy linters.
 .PHONY: test
 test: lint        ## Run tests and generate coverage report.
 	$(ENV_PREFIX)pytest -v --cov-config .coveragerc --cov=strefi -l --tb=short --maxfail=1 tests/
+	@PYTEST_EXIT_CODE=$$?
 	$(ENV_PREFIX)coverage xml
 	$(ENV_PREFIX)coverage html
+	@exit $$PYTEST_EXIT_CODE
 
 .PHONY: clean
 clean:            ## Clean unused files.
