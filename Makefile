@@ -74,6 +74,7 @@ release:          ## Create a new tag for release.
 	@echo "WARNING: This operation will creates version tag and push to github"
 	@git add strefi/VERSION CHANGELOG.md
 	@git commit -m "release: version $(TAG) 🚀"
+	@git push
 	@echo "creating git tag : $(TAG)"
 	@git tag $(TAG)
 	@git push origin $(TAG)
