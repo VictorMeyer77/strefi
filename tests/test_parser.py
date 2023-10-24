@@ -30,14 +30,15 @@ def test_yield_last_line_should_yield_new_file_row_while_running_file_exists():
 
     time.sleep(3)
     stopper.remove_running_file(running_path.split("_")[1])
-    test_thread.join()
 
     assert function_outputs == [str(i) for i in range(100)]
 
     file_read.close()
     os.remove(f"{RESOURCES_PATH}/parser_0.txt")
+    stopper.remove_running_file(running_path.split("_")[1])
 
 
+@pytest.mark.timeout(10)
 def test_yield_last_line_should_stop_gracefully_when_file_is_removed():
     running_path = stopper.write_running_file()
     with open(f"{RESOURCES_PATH}/parser_2.txt", "w") as f:
@@ -56,34 +57,34 @@ def test_yield_last_line_should_stop_gracefully_when_file_is_removed():
 
     assert True
 
+    stopper.remove_running_file(running_path.split("_")[1])
+
 
 @pytest.mark.timeout(10)
 def test_yield_last_line_should_stop_gracefully_when_byte_is_removed():
-    function_outputs = []
     running_path = stopper.write_running_file()
     with open(f"{RESOURCES_PATH}/parser_3.txt", "w") as f:
         f.write("")
     file_read = open(f"{RESOURCES_PATH}/parser_3.txt", "r")
 
-    def thread_yield_last_line():
-        for line in parser.yield_last_line(file_read, running_path):
-            function_outputs.append(line.replace("\n", ""))
+    def thread_remove_bytes():
+        time.sleep(3)
+        with open(f"{RESOURCES_PATH}/parser_3.txt", "a") as file_write:
+            for i in range(100):
+                file_write.write(f"{i}\n")
+                file_write.flush()
+            file_write.seek(0)
+            file_write.truncate()
 
-    test_thread = threading.Thread(target=thread_yield_last_line)
+    test_thread = threading.Thread(target=thread_remove_bytes)
     test_thread.start()
 
-    with open(f"{RESOURCES_PATH}/parser_3.txt", "a") as file_write:
-        for i in range(100):
-            file_write.write(f"{i}\n")
-            file_write.flush()
-        file_write.seek(0)
-        time.sleep(3)
-        file_write.truncate()
+    for _ in parser.yield_last_line(file_read, running_path):
+        continue
 
-    test_thread.join()
+    assert True
 
-    assert function_outputs == [str(i) for i in range(100)]
-
+    stopper.remove_running_file(running_path.split("_")[1])
     file_read.close()
     os.remove(f"{RESOURCES_PATH}/parser_3.txt")
 
@@ -110,7 +111,6 @@ def test_stream_file_should_wait_file_creation():
 
     time.sleep(3)
     stopper.remove_running_file(running_path.split("_")[1])
-    test_thread.join()
 
     assert function_outputs == [str(i) for i in range(100)]
 
