@@ -10,7 +10,6 @@ Stream file and write last row to a kafka topic.
 """
 import json
 import threading
-from typing import Any
 
 from kafka import KafkaProducer
 
@@ -39,16 +38,17 @@ def stream_file_to_topic(
         producer.send(topic, kafka_utils.format_record_value(file_path, line, defaults).encode(), headers=headers)
 
 
-def create_threads(config: dict[str, Any]) -> list[threading.Thread]:
-    """Create one thread by table from all the configuration.
+def start(config_path: str):
+    """Read configuration file and launch all streams.
+    This function is the entrypoint of stefi start command.
+    One thread with his own producer will be launched for each file.
 
     Args:
-        config: dictionary loads from configuration file.
-
-    Returns:
-        List composed by one thread per file to stream.
+        config_path: Configuration file path.
     """
-    threads = []
+    with open(config_path, "r") as f:
+        config = json.loads(f.read())
+
     headers = kafka_utils.format_record_headers(config["headers"])
     running_path = stopper.write_running_file()
 
@@ -59,25 +59,7 @@ def create_threads(config: dict[str, Any]) -> list[threading.Thread]:
             target=stream_file_to_topic,
             args=(file, producer, topic, config["defaults"], headers, running_path),
         )
-        threads.append(thread)
-
-    return threads
-
-
-def start(config_path: str):
-    """Read configuration file and launch all streams.
-    This function is the entrypoint of stefi start command.
-
-    Args:
-        config_path: Configuration file path.
-    """
-    with open(config_path, "r") as f:
-        config = json.loads(f.read())
-    threads = create_threads(config)
-    for thread in threads:
         thread.start()
-    for thread in threads:
-        thread.join()
 
 
 def stop(jobid: str):
