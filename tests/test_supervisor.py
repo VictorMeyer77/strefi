@@ -34,7 +34,7 @@ def test_remove_running_file_should_remove_all_temp_file():
 
 
 @pytest.mark.timeout(20)
-def test_update_running_file_should_update_heartbeat_while_strefi_run():
+def test_update_running_file_should_update_heartbeat_while_strefi_runs():
     def start_thread_function():
         with patch(
             "sys.argv",
@@ -43,7 +43,7 @@ def test_update_running_file_should_update_heartbeat_while_strefi_run():
             __main__.main()
 
     start_thread = threading.Thread(target=start_thread_function)
-    update_running_file_thread = threading.Thread(target=supervisor.write_running_file)
+    update_running_file_thread = threading.Thread(target=supervisor.write_running_file, args=("foo", "foo"))
 
     start_thread.start()
     time.sleep(0.1)
