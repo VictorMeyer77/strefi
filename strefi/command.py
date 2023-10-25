@@ -9,8 +9,8 @@ Stream file and write last row to a kafka topic.
 - `stop(jobid)` - Stop strefi threads.
 """
 import json
-import threading
 import re
+import threading
 
 from kafka import KafkaProducer
 
@@ -60,7 +60,7 @@ def start(config_path: str):
             target=stream_file_to_topic,
             args=(file, producer, topic, config["defaults"], headers, running_path),
         )
-        print(f"{re.findall(r'strefi_(.*)_', running_path)[-1]}: {file} --> {topic}")
+        print(f"{re.findall(r'strefi_([a-zA-Z0-9]*)_', running_path)[0]}: {file} --> {topic}")
         thread.start()
 
 
