@@ -7,25 +7,27 @@ The module contains the following functions:
 
 - `write_running_file()` - Create a running file in /tmp directory.
 - `remove_running_file(job_id)` - Remove a running file from a job id.
+- `update_running_file()` - Update the heartbeat timestamp in whole running file of active threads.
 """
 
+import json
 import os
 import tempfile
+import threading
 import time
-import json
 
 RUNNING_FILE_PATTERN = """{{
 
 "file": "{0}",
 "topic": "{1}",
-"last_update": {2}
+"heartbeat": {2}
 
 }}"""
 
 
 def write_running_file(streamed_file_path: str, topic: str) -> str:
     """Create a running file in /tmp directory.
-    The file name is composed with an ID generated print in the stdout.
+    The file name is composed with an ID generated.
     This id identify the stream and is used to delete running file.
 
     Returns:
@@ -38,11 +40,19 @@ def write_running_file(streamed_file_path: str, topic: str) -> str:
     return running_file.name
 
 
-def update_running_file(running_file_path: str):
-    with open(running_file_path, "r") as f:
-        running_info = json.loads(f.read())
-    with open(running_file_path, "w") as f:
-        f.write(RUNNING_FILE_PATTERN.format(running_info["file"], running_info["topic"], time.time()))
+def update_running_file():
+    """Update the heartbeat timestamp in whole running file of active threads.
+    The heartbeat is updated every 15 seconds. If the heartbeat is older than 15 seconds, the strefi thread is dead.
+    """
+    active_thread_running_paths = [thread.name for thread in threading.enumerate() if "strefi_" in thread.name]
+    if active_thread_running_paths:
+        for running_path in active_thread_running_paths:
+            with open(running_path, "r") as f:
+                running_info = json.loads(f.read())
+            with open(running_path, "w") as f:
+                f.write(RUNNING_FILE_PATTERN.format(running_info["file"], running_info["topic"], time.time()))
+        time.sleep(15)
+        update_running_file()
 
 
 def remove_running_file(job_id: str):
