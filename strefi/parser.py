@@ -4,10 +4,16 @@ The module contains the following functions:
 
 - `yield_last_line(file, running_path)` - Yield last line of a file.
 - `stream_file(file_path, running_path)` - Wait file creation before calling yield_last_line.
+- `file_rows_to_topic(file_path, topic, producer, defaults, headers, running_path)` -
+Stream file and write last row in a kafka topic.
 """
 
 import os
 from typing import Iterator, TextIO
+
+from kafka import KafkaProducer
+
+from strefi import kafka_utils
 
 
 def yield_last_line(file: TextIO, running_path: str) -> Iterator[str]:
@@ -57,3 +63,26 @@ def stream_file(file_path: str, running_path: str) -> Iterator[str]:
             with open(file_path, "r") as file:
                 for line in yield_last_line(file, running_path):
                     yield line
+
+
+def file_rows_to_topic(
+    file_path: str,
+    topic: str,
+    producer: KafkaProducer,
+    defaults: dict[str, object],
+    headers: dict[str, object],
+    running_path: str,
+):
+    """Stream file and write last row in a kafka topic.
+    This function is the streamed file thread entrypoint.
+
+    Args:
+        file_path: File path to stream.
+        topic: Name of the target topic.
+        producer: Instance of KafkaProducer.
+        defaults: Configured dictionary to add in the record value.
+        headers: Configured headers dictionary.
+        running_path: Running file path
+    """
+    for line in stream_file(file_path, running_path):
+        producer.send(topic, kafka_utils.format_record_value(file_path, line, defaults).encode(), headers=headers)

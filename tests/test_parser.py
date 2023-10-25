@@ -115,3 +115,6 @@ def test_stream_file_should_wait_file_creation():
     assert function_outputs == [str(i) for i in range(100)]
 
     os.remove(f"{RESOURCES_PATH}/parser_1.txt")
+
+
+# The function file_rows_to_topic is too high-level to be tested here, its test is included in test_main.py
