@@ -12,7 +12,7 @@
     options:
       show_root_heading: true
 
-::: strefi.stopper
+::: strefi.supervisor
     options:
       show_root_heading: true
 
