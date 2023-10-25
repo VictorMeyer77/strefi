@@ -1,7 +1,7 @@
 import os
 import tempfile
 
-from strefi import stopper
+from strefi import supervisor
 
 
 def test_write_running_file_should_create_temp_file():

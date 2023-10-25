@@ -10,10 +10,11 @@ Stream file and write last row to a kafka topic.
 """
 import json
 import threading
+import re
 
 from kafka import KafkaProducer
 
-from strefi import kafka_utils, parser, stopper
+from strefi import kafka_utils, parser, supervisor
 
 
 def stream_file_to_topic(
@@ -50,15 +51,16 @@ def start(config_path: str):
         config = json.loads(f.read())
 
     headers = kafka_utils.format_record_headers(config["headers"])
-    running_path = stopper.write_running_file()
 
     for file in config["files"].keys():
         producer = kafka_utils.create_producer(config["producer"])
         topic = config["files"][file]
+        running_path = supervisor.write_running_file(file, config["files"][file])
         thread = threading.Thread(
             target=stream_file_to_topic,
             args=(file, producer, topic, config["defaults"], headers, running_path),
         )
+        print(f"{re.findall(r'strefi_(.*)_', running_path)[-1]}: {file} --> {topic}")
         thread.start()
 
 
@@ -69,4 +71,4 @@ def stop(jobid: str):
     Args:
         jobid: ID of the stream to kill, 'all' to kill all streams.
     """
-    stopper.remove_running_file(jobid)
+    supervisor.remove_running_file(jobid)

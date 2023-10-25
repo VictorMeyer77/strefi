@@ -7,7 +7,7 @@ from unittest.mock import patch
 import pytest
 from kafka import KafkaConsumer
 
-from strefi import __main__, stopper
+from strefi import __main__, supervisor
 
 
 def test_parse_args_should_return_namespace():
@@ -87,13 +87,13 @@ def test_start_should_run_strefi():
 
 
 def test_stop_should_kill_strefi():
-    running_path_a = stopper.write_running_file()
+    running_path_a = supervisor.write_running_file("foo", "foo")
     with patch("sys.argv", ["__main__.py", "stop", "-i", f"{running_path_a.split('_')[1]}"]):
         __main__.main()
     assert not os.path.exists(running_path_a)
 
-    running_path_b = stopper.write_running_file()
-    running_path_c = stopper.write_running_file()
+    running_path_b = supervisor.write_running_file("foo", "foo")
+    running_path_c = supervisor.write_running_file("foo", "foo")
     with patch("sys.argv", ["__main__.py", "stop", "-i", "all"]):
         __main__.main()
     assert not os.path.exists(running_path_b)

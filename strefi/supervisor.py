@@ -12,11 +12,20 @@ The module contains the following functions:
 import os
 import tempfile
 import time
+import json
+
+RUNNING_FILE_PATTERN = """{{
+
+"file": "{0}",
+"topic": "{1}",
+"last_update": {2}
+
+}}"""
 
 
-def write_running_file() -> str:
+def write_running_file(streamed_file_path: str, topic: str) -> str:
     """Create a running file in /tmp directory.
-    The file name is composed with an ID generated and print in the stdout.
+    The file name is composed with an ID generated print in the stdout.
     This id identify the stream and is used to delete running file.
 
     Returns:
@@ -24,8 +33,16 @@ def write_running_file() -> str:
     """
     job_id = abs(hash(time.time()))
     running_file = tempfile.NamedTemporaryFile(prefix=f"strefi_{job_id}_", delete=False)
-    print(job_id)
+    with open(running_file.name, "w") as f:
+        f.write(RUNNING_FILE_PATTERN.format(streamed_file_path, topic, time.time()))
     return running_file.name
+
+
+def update_running_file(running_file_path: str):
+    with open(running_file_path, "r") as f:
+        running_info = json.loads(f.read())
+    with open(running_file_path, "w") as f:
+        f.write(RUNNING_FILE_PATTERN.format(running_info["file"], running_info["topic"], time.time()))
 
 
 def remove_running_file(job_id: str):
