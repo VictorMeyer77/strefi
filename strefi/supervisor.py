@@ -8,6 +8,10 @@ The module contains the following functions:
 - `write_running_file()` - Create a running file in /tmp directory.
 - `remove_running_file(job_id)` - Remove a running file from a job id.
 - `update_running_file()` - Update the heartbeat timestamp in whole running file of active threads.
+
+Examples:
+    >>> # Content of a running file
+    >>> {"file": "streamed_file_path", "topic": "kafka_topic", "heartbeat": 1698262227.0394928}
 """
 
 import json
