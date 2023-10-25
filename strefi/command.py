@@ -2,9 +2,6 @@
 
 The module contains the following functions:
 
-- `stream_file_to_topic(file_path, producer, topic, defaults, headers, running_path)` -
-Stream file and write last row to a kafka topic.
-- `create_threads(config)` - Create one thread by table from all the configuration.
 - `start(config_path)` - Read configuration file and launch all streams.
 - `stop(jobid)` - Stop strefi threads.
 """
@@ -12,31 +9,7 @@ import json
 import re
 import threading
 
-from kafka import KafkaProducer
-
 from strefi import kafka_utils, parser, supervisor
-
-
-def stream_file_to_topic(
-    file_path: str,
-    producer: KafkaProducer,
-    topic: str,
-    defaults: dict[str, object],
-    headers: dict[str, object],
-    running_path: str,
-):
-    """Stream file and write last row to a kafka topic.
-
-    Args:
-        file_path: File path to stream.
-        producer: Instance of KafkaProducer.
-        topic: Name of the target topic.
-        defaults: Configured dictionary to add in the record value.
-        headers: Configured headers dictionary.
-        running_path: Running file path
-    """
-    for line in parser.stream_file(file_path, running_path):
-        producer.send(topic, kafka_utils.format_record_value(file_path, line, defaults).encode(), headers=headers)
 
 
 def start(config_path: str):
@@ -57,11 +30,14 @@ def start(config_path: str):
         topic = config["files"][file]
         running_path = supervisor.write_running_file(file, config["files"][file])
         thread = threading.Thread(
-            target=stream_file_to_topic,
-            args=(file, producer, topic, config["defaults"], headers, running_path),
+            target=parser.file_rows_to_topic,
+            args=(file, topic, producer, config["defaults"], headers, running_path),
+            name=running_path,
         )
         print(f"{re.findall(r'strefi_([a-zA-Z0-9]*)_', running_path)[0]}: {file} --> {topic}")
         thread.start()
+
+    supervisor.update_running_file()
 
 
 def stop(jobid: str):
