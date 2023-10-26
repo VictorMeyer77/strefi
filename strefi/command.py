@@ -4,6 +4,7 @@ The module contains the following functions:
 
 - `start(config_path)` - Read configuration file and launch all streams.
 - `stop(jobid)` - Stop strefi threads.
+- `ls()` - Display jobs with their status.
 """
 import json
 import re
@@ -48,3 +49,11 @@ def stop(jobid: str):
         jobid: ID of the stream to kill, 'all' to kill all streams.
     """
     supervisor.remove_running_file(jobid)
+
+
+def ls():
+    """Display jobs with their status."""
+    jobs = supervisor.get_job_status()
+    for job in jobs:
+        status = "\033[92m RUNNING \033[00m" if job["status"] else "\033[91m FAILED \033[00m"
+        print(f"{job['job_id']} \t {job['file']} \t {job['topic']} \t {status}")
