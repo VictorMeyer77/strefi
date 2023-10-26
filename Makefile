@@ -24,6 +24,7 @@ install:          ## Install the project in dev mode.
 .PHONY: fmt
 fmt:              ## Format code using black & isort.
 	$(ENV_PREFIX)isort strefi/
+	$(ENV_PREFIX)isort tests/
 	$(ENV_PREFIX)black -l 120 strefi/
 	$(ENV_PREFIX)black -l 120 tests/
 
@@ -83,4 +84,4 @@ release:          ## Create a new tag for release.
 docs:             ## Build the documentation.
 	@echo "building documentation ..."
 	@$(ENV_PREFIX)mkdocs build
-	URL="site/index.html"; xdg-open $$URL || sensible-browser $$URL || x-www-browser $$URL || gnome-open $$URL
+	@$(ENV_PREFIX)mkdocs serve

@@ -34,14 +34,15 @@ def parse_args(args: list[str]) -> argparse.Namespace:
 
     namespace = parser.parse_args(args)
 
+    if namespace.command.lower() not in ["start", "stop", "ls"]:
+        parser.error(f"unknown command {namespace.command}")
+
     if namespace.command.lower() == "start":
         if namespace.config is None:
             parser.error("missing configuration file path")
     elif namespace.command.lower() == "stop":
         if namespace.jobid is None:
             parser.error("missing configuration job id")
-    else:
-        parser.error(f"unknown command {namespace.command}")
 
     return namespace
 
@@ -54,6 +55,8 @@ def main():
         command.start(namespace.config)
     elif namespace.command.lower() == "stop":
         command.stop(namespace.jobid)
+    elif namespace.command.lower() == "ls":
+        command.ls()
 
 
 if __name__ == "__main__":

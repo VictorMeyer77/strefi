@@ -1,4 +1,5 @@
 import os
+import re
 import threading
 import time
 from argparse import Namespace
@@ -7,7 +8,7 @@ from unittest.mock import patch
 import pytest
 from kafka import KafkaConsumer
 
-from strefi import __main__, stopper
+from strefi import __main__, supervisor
 
 
 def test_parse_args_should_return_namespace():
@@ -87,14 +88,39 @@ def test_start_should_run_strefi():
 
 
 def test_stop_should_kill_strefi():
-    running_path_a = stopper.write_running_file()
+    running_path_a = supervisor.write_running_file("foo", "foo")
     with patch("sys.argv", ["__main__.py", "stop", "-i", f"{running_path_a.split('_')[1]}"]):
         __main__.main()
     assert not os.path.exists(running_path_a)
 
-    running_path_b = stopper.write_running_file()
-    running_path_c = stopper.write_running_file()
+    running_path_b = supervisor.write_running_file("foo", "foo")
+    running_path_c = supervisor.write_running_file("foo", "foo")
     with patch("sys.argv", ["__main__.py", "stop", "-i", "all"]):
         __main__.main()
     assert not os.path.exists(running_path_b)
     assert not os.path.exists(running_path_c)
+
+
+def test_ls_should_display_job_status(capsys):
+    running_file_path_a = supervisor.write_running_file("file_a", "topic_a")
+    running_file_path_b = supervisor.write_running_file("file_b", "topic_b")
+    time.sleep(16)
+    running_file_path_c = supervisor.write_running_file("file_c", "topic_c")
+    running_file_path_d = supervisor.write_running_file("file_d", "topic_d")
+
+    job_id_a = re.findall(r"strefi_([a-zA-Z0-9]*)_", running_file_path_a)[0]
+    job_id_b = re.findall(r"strefi_([a-zA-Z0-9]*)_", running_file_path_b)[0]
+    job_id_c = re.findall(r"strefi_([a-zA-Z0-9]*)_", running_file_path_c)[0]
+    job_id_d = re.findall(r"strefi_([a-zA-Z0-9]*)_", running_file_path_d)[0]
+
+    with patch("sys.argv", ["__main__.py", "ls"]):
+        __main__.main()
+
+    out, err = capsys.readouterr()
+
+    assert f"{job_id_a} \t file_a \t topic_a \t \033[91m FAILED \033[00m" in out
+    assert f"{job_id_b} \t file_b \t topic_b \t \033[91m FAILED \033[00m" in out
+    assert f"{job_id_c} \t file_c \t topic_c \t \033[92m RUNNING \033[00m" in out
+    assert f"{job_id_d} \t file_d \t topic_d \t \033[92m RUNNING \033[00m" in out
+
+    supervisor.remove_running_file("all")
