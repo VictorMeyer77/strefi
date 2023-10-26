@@ -8,6 +8,7 @@ The module contains the following functions:
 - `write_running_file()` - Create a running file in /tmp directory.
 - `remove_running_file(job_id)` - Remove a running file from a job id.
 - `update_running_file()` - Update the heartbeat timestamp in whole running file of active threads.
+- `get_job_status()` - Return a list of all strefi threads with current status.
 
 Examples:
     >>> # Content of a running file
@@ -16,6 +17,7 @@ Examples:
 
 import json
 import os
+import re
 import tempfile
 import threading
 import time
@@ -66,6 +68,33 @@ def remove_running_file(job_id: str):
         job_id: job id of the running file to delete. 'all' to delete all strefi running file.
     """
     job_id = "" if job_id == "all" else job_id
-    running_files = list(filter(lambda x: f"strefi_{str(job_id)}" in x, os.listdir(tempfile.gettempdir())))
-    for running_file in running_files:
-        os.remove(os.path.join(tempfile.gettempdir(), running_file))
+    running_file_names = [file for file in os.listdir(tempfile.gettempdir()) if f"strefi_{str(job_id)}" in file]
+    for running_file_name in running_file_names:
+        os.remove(os.path.join(tempfile.gettempdir(), running_file_name))
+
+
+def get_job_status() -> list[dict[str, object]]:
+    """Return a list of all strefi threads with current status.
+    If status == True, the thread is active, if status == False the thread is dead.
+
+    Examples:
+        >>> get_job_status()
+        [{'job_id': '163892105422928641', 'file': 'file_a', 'topic': 'topic_a', 'status': False}]
+
+    Returns:
+        list metadata dictionaries
+    """
+    job_status = []
+    running_file_names = [file for file in os.listdir(tempfile.gettempdir()) if "strefi" in file]
+    for running_file_name in running_file_names:
+        with open(os.path.join(tempfile.gettempdir(), running_file_name), "r") as f:
+            running_info = json.loads(f.read())
+            job_status.append(
+                {
+                    "job_id": re.findall(r"strefi_([a-zA-Z0-9]*)_", running_file_name)[0],
+                    "file": running_info["file"],
+                    "topic": running_info["topic"],
+                    "status": True if time.time() - running_info["heartbeat"] < 16 else False,
+                }
+            )
+    return job_status
