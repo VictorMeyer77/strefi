@@ -29,13 +29,12 @@ def test_yield_last_line_should_yield_new_file_row_while_running_file_exists():
             file_write.flush()
 
     time.sleep(3)
-    supervisor.remove_running_file(running_path.split("_")[1])
+    supervisor.remove_running_file("all")
 
     assert function_outputs == [str(i) for i in range(100)]
 
     file_read.close()
     os.remove(f"{RESOURCES_PATH}/parser_0.txt")
-    supervisor.remove_running_file(running_path.split("_")[1])
 
 
 @pytest.mark.timeout(10)
@@ -57,7 +56,7 @@ def test_yield_last_line_should_stop_gracefully_when_file_is_removed():
 
     assert True
 
-    supervisor.remove_running_file(running_path.split("_")[1])
+    supervisor.remove_running_file("all")
 
 
 @pytest.mark.timeout(10)
@@ -84,7 +83,7 @@ def test_yield_last_line_should_stop_gracefully_when_byte_is_removed():
 
     assert True
 
-    supervisor.remove_running_file(running_path.split("_")[1])
+    supervisor.remove_running_file("all")
     file_read.close()
     os.remove(f"{RESOURCES_PATH}/parser_3.txt")
 
@@ -110,7 +109,7 @@ def test_stream_file_should_wait_file_creation():
             file_write.flush()
 
     time.sleep(3)
-    supervisor.remove_running_file(running_path.split("_")[1])
+    supervisor.remove_running_file("all")
 
     assert function_outputs == [str(i) for i in range(100)]
 
