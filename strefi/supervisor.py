@@ -16,11 +16,14 @@ Examples:
 """
 
 import json
+import logging
 import os
 import re
 import tempfile
 import threading
 import time
+
+logger = logging.getLogger(__name__)
 
 RUNNING_FILE_PATTERN = """{{
 
@@ -43,6 +46,7 @@ def write_running_file(streamed_file_path: str, topic: str) -> str:
     running_file = tempfile.NamedTemporaryFile(prefix=f"strefi_{job_id}_", delete=False)
     with open(running_file.name, "w") as f:
         f.write(RUNNING_FILE_PATTERN.format(streamed_file_path, topic, time.time()))
+        logger.debug(f"Running file was created {running_file.name}.")
     return running_file.name
 
 
@@ -57,6 +61,7 @@ def update_running_file():
                 running_info = json.loads(f.read())
             with open(running_path, "w") as f:
                 f.write(RUNNING_FILE_PATTERN.format(running_info["file"], running_info["topic"], time.time()))
+            logger.debug(f"{running_path} heartbeat was updated.")
         time.sleep(15)
         update_running_file()
 
@@ -71,6 +76,7 @@ def remove_running_file(job_id: str):
     running_file_names = [file for file in os.listdir(tempfile.gettempdir()) if f"strefi_{str(job_id)}" in file]
     for running_file_name in running_file_names:
         os.remove(os.path.join(tempfile.gettempdir(), running_file_name))
+        logger.debug(f"{os.path.join(tempfile.gettempdir(), running_file_name)} was removed.")
 
 
 def get_job_status() -> list[dict[str, object]]:
