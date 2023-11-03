@@ -59,7 +59,7 @@ def stop(jobid: str):
 
 def ls():
     """Display jobs with their status."""
-    logger.debug(f"ls command is called.")
+    logger.debug("ls command is called.")
     jobs = supervisor.get_job_status()
     for job in jobs:
         status = "\033[92m RUNNING \033[00m" if job["status"] else "\033[91m FAILED \033[00m"
