@@ -10,6 +10,7 @@ Stream file and write last row in a kafka topic.
 
 import logging
 import os
+import time
 from typing import Iterator, TextIO
 
 from kafka import KafkaProducer
@@ -45,9 +46,11 @@ def yield_last_line(file: TextIO, running_path: str) -> Iterator[str]:
                 break
             else:
                 file_size = new_file_size
-            line = file.readline()
-            if line and line not in ["\n", ""]:
-                yield line
+            lines = file.readlines()
+            for line in lines:
+                if line and line not in ["\n", ""]:
+                    yield line
+            time.sleep(1)
         except FileNotFoundError:
             logger.info(f"{file.name} was removed. Streaming finished.")
             break
