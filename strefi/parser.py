@@ -8,12 +8,15 @@ The module contains the following functions:
 Stream file and write last row in a kafka topic.
 """
 
+import logging
 import os
 from typing import Iterator, TextIO
 
 from kafka import KafkaProducer
 
 from strefi import kafka_utils
+
+logger = logging.getLogger(__name__)
 
 
 def yield_last_line(file: TextIO, running_path: str) -> Iterator[str]:
@@ -31,12 +34,14 @@ def yield_last_line(file: TextIO, running_path: str) -> Iterator[str]:
     Returns:
         Yield the last line. Ignore empty line.
     """
+    logger.info(f"Starting stream {file.name}.")
     file_size = 0
     file.seek(0, os.SEEK_END)
     while os.path.exists(running_path):
         try:
             new_file_size = os.path.getsize(file.name)
             if new_file_size < file_size:
+                logger.info(f"Some bytes were removed from {file.name}. Streaming finished.")
                 break
             else:
                 file_size = new_file_size
@@ -44,6 +49,7 @@ def yield_last_line(file: TextIO, running_path: str) -> Iterator[str]:
             if line and line not in ["\n", ""]:
                 yield line
         except FileNotFoundError:
+            logger.info(f"{file.name} was removed. Streaming finished.")
             break
 
 
@@ -84,5 +90,9 @@ def file_rows_to_topic(
         headers: Configured headers dictionary.
         running_path: Running file path
     """
-    for line in stream_file(file_path, running_path):
-        producer.send(topic, kafka_utils.format_record_value(file_path, line, defaults).encode(), headers=headers)
+    try:
+        for line in stream_file(file_path, running_path):
+            producer.send(topic, kafka_utils.format_record_value(file_path, line, defaults).encode(), headers=headers)
+    except Exception as e:  # pragma: no cover
+        logger.error(e)
+        raise e

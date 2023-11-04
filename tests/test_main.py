@@ -13,13 +13,13 @@ from strefi import __main__, supervisor
 
 def test_parse_args_should_return_namespace():
     args_start = ["start", "-c", "test.json"]
-    args_stop = ["stop", "-i", "91262"]
+    args_stop = ["stop", "-i", "91262", "-l", "log.conf"]
 
     namespace_start = __main__.parse_args(args_start)
     namespace_stop = __main__.parse_args(args_stop)
 
-    assert namespace_start == Namespace(command="start", config="test.json", jobid=None)
-    assert namespace_stop == Namespace(command="stop", config=None, jobid="91262")
+    assert namespace_start == Namespace(command="start", config="test.json", jobid=None, log=None)
+    assert namespace_stop == Namespace(command="stop", config=None, jobid="91262", log="log.conf")
 
 
 def test_parse_args_should_raises_error_when_args_are_invalids():
@@ -34,6 +34,24 @@ def test_parse_args_should_raises_error_when_args_are_invalids():
     # missing job id with stop command
     with pytest.raises(SystemExit):
         __main__.parse_args(["stop"])
+
+
+def test_configure_logger_should_apply_default_configuration_when_path_is_not_defined():
+    __main__.configure_logger(None)
+
+    __main__.logger.warning("test default")
+
+    with open(".strefi.log", "r") as f:
+        assert " - strefi.__main__ - MainThread - WARNING - test default" in f.read()
+
+
+def test_configure_logger_should_apply_file_configuration_when_path_is_defined():
+    __main__.configure_logger("tests/resources/conf/log.conf")
+
+    __main__.logger.warning("test conf")
+
+    with open(".strefi.log", "r") as f:
+        assert "strefi/tests/test_main.py test conf" in f.read()
 
 
 def test_start_should_run_strefi():
@@ -53,7 +71,10 @@ def test_start_should_run_strefi():
             consumed_record_headers.append(record.headers)
 
     def start_thread_function():
-        with patch("sys.argv", ["__main__.py", "start", "-c", "tests/resources/conf/tests.json"]):
+        with patch(
+            "sys.argv",
+            ["__main__.py", "start", "-c", "tests/resources/conf/tests.json"],
+        ):
             __main__.main()
 
     def get_target_records():
