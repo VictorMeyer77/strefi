@@ -93,6 +93,6 @@ def file_rows_to_topic(
     try:
         for line in stream_file(file_path, running_path):
             producer.send(topic, kafka_utils.format_record_value(file_path, line, defaults).encode(), headers=headers)
-    except Exception as e:
+    except Exception as e:  # pragma: no cover
         logger.error(e)
         raise e
