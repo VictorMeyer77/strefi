@@ -68,11 +68,11 @@ def test_yield_last_lines_should_stop_gracefully_when_byte_is_removed():
     file_read = open(f"{RESOURCES_PATH}/parser_3.txt", "r")
 
     def thread_remove_bytes():
-        time.sleep(3)
+        time.sleep(2)
         with open(f"{RESOURCES_PATH}/parser_3.txt", "a") as file_write:
-            for i in range(100):
-                file_write.write(f"{i}\n")
-                file_write.flush()
+            file_write.write("0\n1\n2\n")
+            file_write.flush()
+            time.sleep(0.25)
             file_write.seek(0)
             file_write.truncate()
 
