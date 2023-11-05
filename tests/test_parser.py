@@ -23,6 +23,8 @@ def test_yield_last_line_should_yield_new_file_row_while_running_file_exists():
     test_thread = threading.Thread(target=thread_yield_last_line)
     test_thread.start()
 
+    time.sleep(2)
+
     with open(f"{RESOURCES_PATH}/parser_0.txt", "a") as file_write:
         for i in range(100):
             file_write.write(f"{i}\n")
@@ -102,6 +104,8 @@ def test_stream_file_should_wait_file_creation():
 
     with open(f"{RESOURCES_PATH}/parser_1.txt", "w") as f:
         f.write("")
+
+    time.sleep(2)
 
     with open(f"{RESOURCES_PATH}/parser_1.txt", "a") as file_write:
         for i in range(100):
