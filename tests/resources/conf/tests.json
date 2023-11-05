@@ -2,8 +2,8 @@
    "producer":{
       "bootstrap_servers":"localhost:9092",
       "client_id":"strefi-client",
-      "acks":0,
-      "retries":0
+      "acks":"all",
+      "retries":100
    },
    "headers":{
       "version":"0.1",
