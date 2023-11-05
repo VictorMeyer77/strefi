@@ -49,7 +49,7 @@ def yield_last_lines(file: TextIO, running_path: str) -> Iterator[str]:
             for line in lines:
                 if line and line not in ["\n", ""]:
                     yield line
-            time.sleep(1)
+            time.sleep(0.5)
         except FileNotFoundError:
             logger.info(f"{file.name} was removed. Streaming finished.")
             break
