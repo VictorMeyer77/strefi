@@ -67,14 +67,13 @@ def stream_file(file_path: str, running_path: str, from_beginning: bool = True) 
     Returns:
         Yield the last line. Ignore empty line.
     """
-    if os.path.exists(running_path):
+    while os.path.exists(running_path):
         if os.path.exists(file_path):
             with open(file_path, "r") as file:
                 if not from_beginning:
                     file.seek(0, os.SEEK_END)
                 yield from yield_last_lines(file, running_path)
-        time.sleep(0.01)
-        yield from stream_file(file_path, running_path)
+        from_beginning = True
 
 
 def file_rows_to_topic(
