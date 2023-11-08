@@ -76,7 +76,7 @@ $ python
 ...     print(record)
 ```
 
-Now we will create log/example.log and add a line. When we save we can see that a record has been sent in our topic.
+Now we will create log/example.log and add a line. We can see that a record has been sent in our topic.
 
 ```shell
 $ mkdir log
