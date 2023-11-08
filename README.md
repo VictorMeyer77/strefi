@@ -35,6 +35,8 @@ make install
 
 ## Usage
 
+Read the complete [example](docs/example.md) for more details.
+
 ```txt
 usage: strefi [-h] [-c CONFIG] [-i JOBID] [-l LOG] command
 

@@ -60,3 +60,5 @@ List jobs status
 ```shell
 strefi ls
 ```
+
+Read the complete [example](example.md) for more details.
