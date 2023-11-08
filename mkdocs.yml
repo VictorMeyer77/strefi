@@ -10,6 +10,7 @@ theme: readthedocs
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
+  - Example: example.md
   - Configuration: configuration.md
   - Logging: logging.md
   - Reference: reference.md
