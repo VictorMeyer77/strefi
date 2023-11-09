@@ -35,8 +35,10 @@ make install
 
 ## Usage
 
+Read the complete [example](docs/example.md) for more details.
+
 ```txt
-usage: strefi [-h] [-c CONFIG] [-i JOBID] command
+usage: strefi [-h] [-c CONFIG] [-i JOBID] [-l LOG] command
 
 Stream each new rows of a file and write in kafka
 
@@ -49,6 +51,7 @@ options:
                         configuration file path
   -i JOBID, --jobid JOBID
                         stream id
+  -l LOG, --log LOG     log configuration file path (configparser file format)
 ```
 
 Launch job
@@ -68,6 +71,13 @@ Stop all jobs
 ```shell
 strefi stop -i all
 ```
+
+List jobs status
+
+```shell
+strefi ls
+```
+
 
 ## Configuration
 
