@@ -95,3 +95,15 @@ $ echo $'row_2\nrow_3' >> log/example.log
 ConsumerRecord(topic='strefi-tests', partition=0, offset=952612, timestamp=1699471746122, timestamp_type=0, key=None, value=b'{"file": "log/example.log", "row": "row_2\\n", "project": "example"}', headers=[('source', b'strefi')], checksum=None, serialized_key_size=-1, serialized_value_size=67, serialized_header_size=12)
 ConsumerRecord(topic='strefi-tests', partition=0, offset=952613, timestamp=1699471746123, timestamp_type=0, key=None, value=b'{"file": "log/example.log", "row": "row_3\\n", "project": "example"}', headers=[('source', b'strefi')], checksum=None, serialized_key_size=-1, serialized_value_size=67, serialized_header_size=12)
 ```
+
+Finally, you can stop the stream by giving the job id or stop all streams with 'all'.
+
+```shell
+$ strefi stop -i 1732987007481404186
+```
+
+or 
+
+```shell
+$ strefi stop -i all
+```
