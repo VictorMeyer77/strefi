@@ -16,6 +16,20 @@ Log types:
 ### changed
 ### Fixed
 ### Removed
+### Security
+
+## [0.2.0](https://github.com/VictorMeyer77/strefi/releases/tag/0.2.0) - 2023/11/10
+
+### Added
+- Complete documentation with example
+- Logging module
+- ls command
+- Pypi badge 
+### changed
+- Refactor file reading
+- Refactor start command
+### Fixed
+### Removed
 ### Security 
 
 ## [0.1.0](https://github.com/VictorMeyer77/strefi/releases/tag/0.1.0) - 2023/10/23
