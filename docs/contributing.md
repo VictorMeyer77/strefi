@@ -119,5 +119,3 @@ To trigger a new release all you need to do is.
 ### Security 
 ```
 7. Run `make release` to create a new tag and push it to the remote repo.
-8. Once the release is done, change the version in [VERSION](https://github.com/VictorMeyer77/strefi/blob/main/strefi/VERSION) with a "SNAPSHOT" version.
-9. Finally, commit, push and merge your release branch.
