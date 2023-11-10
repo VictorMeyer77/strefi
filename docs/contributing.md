@@ -103,13 +103,12 @@ this token can be generated on [pypi.org](https://pypi.org/account/).
 
 To trigger a new release all you need to do is.
 
-1. If you have changes to add to the repo
-    * Make your changes following the steps described above.
-    * Commit your changes following the [conventional git commit messages](https://www.conventionalcommits.org/en/v1.0.0/).
-2. Run the tests to ensure everything is working.
-3. Change the version in [VERSION](https://github.com/VictorMeyer77/strefi/blob/main/strefi/VERSION). 
-4. In CHANGELOG.md replace [Unreleased] with the new version.
-5. Add these lines on the top of CHANGELOG.md
+1. Ensure that all your modifications are on the main branch.
+2. Create a new branch release/X.Y.Z
+3. Run the tests to ensure everything is working.
+4. Change the version in [VERSION](https://github.com/VictorMeyer77/strefi/blob/main/strefi/VERSION). 
+5. In CHANGELOG.md replace [Unreleased] with the new version.
+6. Add these lines on the top of CHANGELOG.md
 ```txt
 ## [Unreleased]
 
@@ -119,4 +118,4 @@ To trigger a new release all you need to do is.
 ### Removed
 ### Security 
 ```
-6. Run `make release` to create a new tag and push it to the remote repo.
+7. Run `make release` to create a new tag and push it to the remote repo.
